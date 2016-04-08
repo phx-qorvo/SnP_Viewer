@@ -46,6 +46,8 @@ def smith(p,white_backgorund):
     pathItem.setPen(pg.mkPen(pen2, width = 0.2))
     pathItem.setParentItem(circle1)
 
+
+#below is code filled into the 'pre-canned' python scripts
 moving_average = \
 '''# --------------------moving average: ---------------------------------------
 import pandas as pd; import numpy as np

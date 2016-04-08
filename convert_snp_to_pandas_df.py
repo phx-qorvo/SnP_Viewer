@@ -1,9 +1,9 @@
-from touchstone import Touchstone
+from read_touchstone import Touchstone
 import pandas as pd
 import numpy as np
 from Tkinter import *
 import os
-from UI import UserInterface
+from UI_file_select import UserInterface
 
 
 # file = './Data/A.s3p'   

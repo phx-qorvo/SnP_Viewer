@@ -1,25 +1,36 @@
-import numpy as np
-from Tkinter import *
-import os
-import re
-import random
-from scipy import interpolate
+'''
+__author__ = "Roy Trudell"
+__copyright__ = "Copyright 2016"
+__credits__ = ["Roy Trudell"]
 
-# interactive plotting
+__license__ = "Open Source"
+__version__ = "1.0.1"
+__maintainer__ = "Roy Trudell"
+__email__ = "N/A"
+__status__ = "development"
+'''
+
+#Scientific/operational Libraries
+import numpy as np
+from scipy import interpolate
+import os
+
+# interactive/plotting Libraries
+from Tkinter import *
 from pyqtgraph.Qt import QtGui, QtCore
 import pyqtgraph as pg
 import matplotlib.cm as cm
 
-# my Stuff
-from get_user_file_constraints import UserLimits
+# my Libraries
+from UI_snp_constraints import UserLimits
 from Utils import smith
 from Utils import moving_average
 from Utils import power_gain
 from Utils import vswr_circles
 from Utils import spec_lines
-from UI import UserInterface
-from converter import convert_snp_csv
-import syntax
+from UI_file_select import UserInterface
+from convert_snp_to_pandas_df import convert_snp_csv
+import py_syntax_highlighting
 
 # start debugger
 # import pdb;pdb.set_trace()
@@ -78,7 +89,7 @@ edit = QtGui.QPlainTextEdit()
 edit.setPlainText(
     '#You can write python code in this window:\n#For example:\n' +
     "plots['Magnitude_S12'].setTitle('Test')")
-highlight = syntax.PythonHighlighter(edit.document())
+highlight = py_syntax_highlighting.PythonHighlighter(edit.document())
 
 # Code input area and run button
 editProxy = QtGui.QGraphicsProxyWidget()

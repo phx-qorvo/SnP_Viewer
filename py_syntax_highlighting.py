@@ -1,5 +1,5 @@
 # Toggle line numbers
-# syntax.py
+# py_syntax_highlighting.py
 
 import sys
 
@@ -107,7 +107,8 @@ class PythonHighlighter (QSyntaxHighlighter):
             # Numeric literals
             (r'\b[+-]?[0-9]+[lL]?\b', 0, STYLES['numbers']),
             (r'\b[+-]?0[xX][0-9A-Fa-f]+[lL]?\b', 0, STYLES['numbers']),
-            (r'\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b', 0, STYLES['numbers']),
+            (r'\b[+-]?[0-9]+(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?\b', 0,
+             STYLES['numbers']),
         ]
 
         # Build a QRegExp for each pattern

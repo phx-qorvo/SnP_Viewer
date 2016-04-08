@@ -8,7 +8,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 import csv
 import os
 
-from UI import UserInterface
+from UI_file_select import UserInterface
 from Tkinter import *
 import Tkinter, Tkconstants, tkFileDialog
 import ctypes
