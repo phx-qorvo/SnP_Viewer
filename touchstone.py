@@ -164,13 +164,13 @@ class Touchstone():
                 self.resistance = toks[4]
                 if self.frequency_unit not in ['hz', 'khz', 'mhz', 'ghz']:
                     print 'ERROR: illegal frequency_unit [%s]',  self.frequency_unit
-                    # TODO: Raise
+
                 if self.parameter not in 'syzgh':
                     print 'ERROR: illegal parameter value [%s]', self.parameter
-                    # TODO: Raise
+
                 if self.format not in ['ma', 'db', 'ri']:
                     print 'ERROR: illegal format value [%s]', self.format
-                    # TODO: Raise
+
 
                 continue
 
@@ -370,7 +370,6 @@ def hfss_touchstone_2_gamma_z0(filename):
     ----------
     >>> f,gamm,z0 = rf.hfss_touchstone_2_gamma_z0('line.s2p')
     '''
-    #TODO: make this work for different HFSS versions. and arbitrary 
     # number of ports
     ntwk = Network(filename)
     f= open(filename)

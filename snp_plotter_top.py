@@ -21,12 +21,10 @@ from UI import UserInterface
 from converter import convert_snp_csv
 import syntax
 
+# start debugger
+# import pdb;pdb.set_trace()
 
 
-print "this is a test_branch in pycharm"
-# # import pdb;pdb.set_trace()
-# if white_background:
-#
 # ----------User input
 root = Tk()
 user_input = UserInterface(master=root)  # creates instance of UI
@@ -34,7 +32,7 @@ user_input.mainloop()  # keeps loop open until user hits 'Go'
 files = user_input.filez  # first file set
 root.destroy()  # closes UI
 
-# convert_data to pandas df
+# ---- Convert_data to pandas df
 frames = []
 order = []
 for f in files:
@@ -228,7 +226,7 @@ def remove_markers():
 
 def combo_func():
     """
-    update combo
+    update combo Pre-Canned Functions Box
     """
     if combo.currentText() == 'moving_average':
         edit.setPlainText(moving_average)
