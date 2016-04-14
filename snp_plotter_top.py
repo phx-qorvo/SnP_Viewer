@@ -88,7 +88,7 @@ pg.setConfigOptions(antialias=True)  # Enable anti-aliasing for prettier plots
 edit = QtGui.QPlainTextEdit()
 edit.setPlainText(
     '#You can write python code in this window:\n#For example:\n' +
-    "plots['Magnitude_S12'].setTitle('Test')")
+    "plots['dB_S12'].setTitle('Test')")
 highlight = py_syntax_highlighting.PythonHighlighter(edit.document())
 
 # Code input area and run button
@@ -210,7 +210,7 @@ def add_marker():
                         f1 = interpolate.interp1d(
                             data[name_of_curve_]['MHz'],
                             data[name_of_curve_][
-                                'S' + str(t[-2]) + str(t[-1]) + '_Mag'])
+                                'S' + str(t[-2]) + str(t[-1]) + '_dB'])
 
                         f_mhz = float(mrkr_input.text())
                         val = f1(f_mhz)
@@ -265,7 +265,7 @@ for j in range(1, file_type + 1):  # first integer of snp
 
             # title is the main key for dictionaries
             if user_val.graph_type[counter].get() == 1:  # Magnitude title
-                title = 'Magnitude_S' + str(j) + str(i)
+                title = 'dB_S' + str(j) + str(i)
             else:  # smith chart title
                 title = 'Smith_S' + str(j) + str(i)
 
@@ -285,7 +285,7 @@ for j in range(1, file_type + 1):  # first integer of snp
                         traces[title][name_of_curve] = \
                             plots[title].plot(x=np.asarray(df['MHz']),
                                               y=np.asarray(df['S' + str(
-                                                  j) + str(i) + '_Mag']),
+                                                  j) + str(i) + '_dB']),
                                               pen=colors[name_of_curve],
                                               row=i - 1, col=j - 1)
 

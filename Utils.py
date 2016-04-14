@@ -64,9 +64,9 @@ bwd = ewma( y[::-1], span=15 ) # take EWMA in bwd direction
 ma = np.vstack(( fwd, bwd[::-1] )) # lump fwd and bwd together
 ma = np.mean( ma, axis=0 ) # average
 
-#EDIT WHICH PLOT YOU WANT THIS ON (Replace 'Magnitude_S12' with the plot you want this on)
-plots['Magnitude_S12'].addLegend(size = (0.001,0.001))
-plots['Magnitude_S12'].plot(x=x,y=ma,pen=91,name = 'MovingAvg')
+#EDIT WHICH PLOT YOU WANT THIS ON (Replace 'dB_S12' with the plot you want this on)
+plots['dB_S12'].addLegend(size = (0.001,0.001))
+plots['dB_S12'].plot(x=x,y=ma,pen=91,name = 'MovingAvg')
 '''
 power_gain = \
 '''# --------------------------Power Gain---------------------------------------
@@ -82,9 +82,9 @@ s12_complex		= np.vectorize(complex)(df['S12R'],df['S12I'])
 
 Power_Gain      = 10*np.log(np.absolute(s21_complex)**2/(1-(np.absolute(s11_complex)**2)))
 x=np.asarray(df['MHz']); y = Power_Gain
-#EDIT WHICH PLOT YOU WANT THIS ON (Replace 'Magnitude_S12' with the plot you want this on)
-plots['Magnitude_S12'].addLegend(size = (0.001,0.001))
-plots['Magnitude_S12'].plot(x=x,y=y,pen=91,name = 'PowerGain')
+#EDIT WHICH PLOT YOU WANT THIS ON (Replace 'dB_S12' with the plot you want this on)
+plots['dB_S12'].addLegend(size = (0.001,0.001))
+plots['dB_S12'].plot(x=x,y=y,pen=91,name = 'PowerGain')
 
 '''
 vswr_circles =\
@@ -107,6 +107,6 @@ import numpy as np; import pandas as pd;from pyqtgraph.Qt import QtGui, QtCore
 x=np.asarray([1000,2000])       #X-Limits
 y=np.asarray([-10,-10])         #Y-Limits
 
-plots['Magnitude_S12'].plot(x=x,y=y,pen={'color': (255,0,0), 'width': 3,'style':QtCore.Qt.DotLine})
+plots['dB_S12'].plot(x=x,y=y,pen={'color': (255,0,0), 'width': 3,'style':QtCore.Qt.DotLine})
 
 '''

@@ -41,7 +41,7 @@ def convert_snp_csv(file):
                 complex = sParams['S' + str(x) + str(y) + 'R'] + \
                           sParams['S' + str(x) + str(y) + 'I'] * 1j
 
-                sParams['S' + str(x) + str(y) + '_Mag'] = 20 * np.log10(
+                sParams['S' + str(x) + str(y) + '_dB'] = 20 * np.log10(
                     np.absolute(complex))
 
                 sParams['S' + str(x) + str(y) + '_Ang'] = np.angle(complex,
