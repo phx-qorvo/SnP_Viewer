@@ -6,19 +6,22 @@ import os
 from UI_file_select import UserInterface
 
 
-# file = './Data/A.s3p'   
+
+#Conrols ----------
+bandSearch = True  # CONTORL
+antSearch = True
 
 def convert_snp_csv(file):
     fpn_split = file.split('.')
-    f_ext = fpn_split[-1]  # file extension         
-    # if f_ext =='s2p':                        
+    # f_ext = fpn_split[-1]  # file extension
+    # if f_ext =='s2p':
     Instance = Touchstone(file)
     freq, array = Instance.get_sparameter_arrays()
     names = Instance.get_sparameter_names()
-    s11 = array[:, 0, 0]
+    # s11 = array[:, 0, 0]
     sParams = pd.DataFrame(columns=names)
 
-    strings = []
+    # strings = []
     for i, name in enumerate(names):
         if i == 0:
             sParams[str(name)] = freq
@@ -47,9 +50,9 @@ def convert_snp_csv(file):
                 sParams['S' + str(x) + str(y) + '_Ang'] = np.angle(complex,
                                                                    deg=True)
 
-    bandsearch = False  # CONTORL
+
     # Extract Band From Filename
-    if bandsearch == True:
+    if bandSearch == True:
         band = ''
         for x, letter in enumerate(filename):
             if letter == 'B' or letter == 'b':
@@ -67,7 +70,15 @@ def convert_snp_csv(file):
                 if tail[x + 3] == 'a' or tail[x + 3] == 'A' or \
                                 tail[x + 3] == 'b' or tail[x + 3] == 'B':
                     band += str(tail[x + 3])
-                sParams['band'] = str(band)
+                sParams['Txband'] = str(band)
+
+
+    if antSearch == True:
+        if 'ANT1' in filename or 'ant1' in filename:
+            sParams['Antenna'] = '1'
+        if 'ANT2' in filename or 'ant2' in filename:
+                sParams['Antenna'] = '2'
+
 
     # More Calculated columns
     sParams['sourcefile'] = filename

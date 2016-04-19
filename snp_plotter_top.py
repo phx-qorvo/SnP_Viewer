@@ -20,6 +20,7 @@ from Tkinter import *
 from pyqtgraph.Qt import QtGui, QtCore
 import pyqtgraph as pg
 import matplotlib.cm as cm
+import pandas as pd
 
 # my Libraries
 from UI_snp_constraints import UserLimits
@@ -41,6 +42,10 @@ root = Tk()
 user_input = UserInterface(master=root)  # creates instance of UI
 user_input.mainloop()  # keeps loop open until user hits 'Go'
 files = user_input.filez  # first file set
+colData2 = user_input.column2Data.get()
+colName2 = user_input.column2Name.get()
+colData1 = user_input.column1Data.get()
+colName1 = user_input.column1Name.get()
 root.destroy()  # closes UI
 
 # ---- Convert_data to pandas df
@@ -51,6 +56,16 @@ for f in files:
     extension = os.path.splitext(f)[1]
     num = [int(s) for s in re.findall(r'\d+', extension)]  # get file extension
     order.append(num[0])  # get 'n' number associated with SnP  (order)
+
+#save all data as one big file
+
+
+allFrames = pd.concat(frames)
+if user_input.customColumns.get() == True:
+    allFrames[colName1] = colData1
+    allFrames[colName2] = colData2
+
+allFrames.to_csv('./Data/output/all.csv',index = False)
 
 # get user constrains
 file_type = max(order)  # finds highest order snp file
