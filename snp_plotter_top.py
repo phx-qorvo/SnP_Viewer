@@ -62,8 +62,29 @@ for f in files:
 
 allFrames = pd.concat(frames)
 if user_input.customColumns.get() == True:
+
     allFrames[colName1] = colData1
     allFrames[colName2] = colData2
+
+    columns = []
+    for col in allFrames.columns.tolist():
+        if col == 'Txband' or col == 'sourcefile' or\
+           col == colName1 or col == colName2:
+
+            columns.append((col,'String'))
+        else:
+            columns.append((col,'Real'))
+    print columns
+
+
+    # print dataTypeDataFrame
+    allFrames.columns = pd.MultiIndex.from_tuples(columns)
+    print allFrames
+
+
+
+
+
 
 allFrames.to_csv('./Data/output/all.csv',index = False)
 

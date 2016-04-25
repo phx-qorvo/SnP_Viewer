@@ -29,12 +29,13 @@ class UserInterface(Frame):
         self.portBox = Checkbutton(self, variable = self.customColumns,
                                    state = ACTIVE,
                                    text = 'Custom Columns?')
+        self.portBox.select()
 
         self.portBox.grid(row=0,column=1)
 
         Label(self, text="Custom Column 1 Title: ").grid(row=1,column=1)
         self.column1Name = Entry(self)
-        self.column1Name.insert(0, 'Board')
+        self.column1Name.insert(0, 'Build')
         self.column1Name.grid(row=1, column=2)
 
         Label(self, text="Custom Column 1 Data: ").grid(row=2, column=1)
@@ -58,22 +59,6 @@ class UserInterface(Frame):
         Frame.__init__(self, master)
         self.portBox = Checkbutton()
         self.customColumns = BooleanVar()
-
-        # self.column2Name = StringVar()
-        # self.column1Name = StringVar()
-        # self.column1Data = StringVar()
-        # self.column2Data = StringVar()
-        #
-        #
-        # self.column2Name = StringVar()
-        # self.column1Name = StringVar()
-        # self.column1Data = StringVar()
-        # self.column2Data = StringVar()
-        # self.column2Name.set("Unit")
-        # self.column2Data.set("One")
-        # self.column1Name.set("Board")
-        # self.column1Data.set("One")
-
 
         master.title("User Interface")
         self.grid()

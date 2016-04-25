@@ -82,8 +82,15 @@ def convert_snp_csv(file):
 
     # More Calculated columns
     sParams['sourcefile'] = filename
-    sParams['MHz'] = sParams['frequency'] * (1 / 1e6)
+    sParams['Frequency (MHz)'] = sParams['frequency'] * (1 / 1e6)
     sParams = sParams.drop('frequency', 1)
+    
+    #move Frequency to be the first column
+    columns = list(sParams.columns.values)
+    columns.insert(0,columns.pop(columns.index('Frequency (MHz)')))
+    sParams = sParams[columns]
 
+
+    
     sParams.to_csv('./Data/output/' + filename + '.csv', index=False)
     return sParams
