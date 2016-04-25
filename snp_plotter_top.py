@@ -62,10 +62,8 @@ for f in files:
 
 allFrames = pd.concat(frames)
 if user_input.customColumns.get() == True:
-
     allFrames[colName1] = colData1
     allFrames[colName2] = colData2
-
     columns = []
     for col in allFrames.columns.tolist():
         if col == 'Txband' or col == 'sourcefile' or\
@@ -74,16 +72,7 @@ if user_input.customColumns.get() == True:
             columns.append((col,'String'))
         else:
             columns.append((col,'Real'))
-    print columns
-
-
-    # print dataTypeDataFrame
     allFrames.columns = pd.MultiIndex.from_tuples(columns)
-    print allFrames
-
-
-
-
 
 
 allFrames.to_csv('./Data/output/all.csv',index = False)
@@ -215,14 +204,14 @@ def add_marker():
 
                         # find real value
                         fr = interpolate.interp1d(
-                            data[name_of_curve_]['MHz'],
+                            data[name_of_curve_]['Frequency'],
                             data[name_of_curve_][
                                 'S' + str(t[-2]) + str(t[-1]) + 'R'])
                         r_val = fr(f_mhz)
 
                         # find Imaginary value
                         fi = interpolate.interp1d(
-                            data[name_of_curve_]['MHz'],
+                            data[name_of_curve_]['Frequency'],
                             data[name_of_curve_][
                                 'S' + str(t[-2]) + str(t[-1]) + 'I'])
                         i_val = fi(f_mhz)
@@ -244,7 +233,7 @@ def add_marker():
                 else:
                     try:
                         f1 = interpolate.interp1d(
-                            data[name_of_curve_]['MHz'],
+                            data[name_of_curve_]['Frequency'],
                             data[name_of_curve_][
                                 'S' + str(t[-2]) + str(t[-1]) + '_dB'])
 
@@ -319,7 +308,7 @@ for j in range(1, file_type + 1):  # first integer of snp
                     if user_val.graph_type[counter].get() == 1:  # dB
                         # Plot Magnitude data
                         traces[title][name_of_curve] = \
-                            plots[title].plot(x=np.asarray(df['MHz']),
+                            plots[title].plot(x=np.asarray(df['Frequency']),
                                               y=np.asarray(df['S' + str(
                                                   j) + str(i) + '_dB']),
                                               pen=colors[name_of_curve],
@@ -331,8 +320,8 @@ for j in range(1, file_type + 1):  # first integer of snp
                             # if we are working on 1st Magnitude plot
                             # set limits of linear region item to max and min
                             lr = pg.LinearRegionItem(
-                                [np.asarray(df['MHz']).min(),
-                                 np.asarray(df['MHz']).max()])
+                                [np.asarray(df['Frequency']).min(),
+                                 np.asarray(df['Frequency']).max()])
                             lr.setZValue(-10)  # ???
                             plots[title].addItem(
                                 lr)  # add lr object to Magnitude plot
@@ -369,8 +358,8 @@ def update():
     for t, v in plots.iteritems():
         if 'Smith' in t:
             for curve, value1 in traces[t].iteritems():
-                df_slice = data[curve][(data[curve]['MHz'] >= min_limit) &
-                                       (data[curve]['MHz'] <= max_limit)]
+                df_slice = data[curve][(data[curve]['Frequency'] >= min_limit) &
+                                       (data[curve]['Frequency'] <= max_limit)]
 
                 x_val = np.asarray(
                     df_slice['S' + str(t[-2]) + str(t[-1]) + 'R'])
@@ -434,7 +423,7 @@ def mouse_moved(evt):
                         str(round(return_loss, 2)))
 
             else:  # if mouse in Magnitude plot return Freq & magnitude in dBm
-                data_string = '(' + str(round(data_point_x, 3)) + 'MHz' + \
+                data_string = '(' + str(round(data_point_x, 3)) + 'Frequency' + \
                               ' ,' + str(round(data_point_y, 3)) + 'dBm)'
                 # label.setText(data_string)
             win.setWindowTitle('SnP_Plots: ' + data_string)
