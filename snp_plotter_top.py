@@ -67,7 +67,7 @@ if user_input.customColumns.get() == True:
     columns = []
     for col in allFrames.columns.tolist():
         if col == 'Txband' or col == 'sourcefile' or\
-           col == colName1 or col == colName2:
+           col == colName1 or col == colName2 or col == 'Antenna':
 
             columns.append((col,'String'))
         else:
