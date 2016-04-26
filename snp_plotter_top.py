@@ -10,7 +10,7 @@ __email__ = "N/A"
 __status__ = "development"
 '''
 
-#Scientific/operational Libraries
+# Scientific/operational Libraries
 import numpy as np
 from scipy import interpolate
 import os
@@ -57,25 +57,27 @@ for f in files:
     num = [int(s) for s in re.findall(r'\d+', extension)]  # get file extension
     order.append(num[0])  # get 'n' number associated with SnP  (order)
 
-#save all data as one big file
+# save all data as one big file
 
 
-allFrames = pd.concat(frames)
+#Spotfire Stuff
 if user_input.customColumns.get() == True:
+    allFrames = pd.concat(frames)
     allFrames[colName1] = colData1
     allFrames[colName2] = colData2
-    columns = []
-    for col in allFrames.columns.tolist():
-        if col == 'Txband' or col == 'sourcefile' or\
-           col == colName1 or col == colName2 or col == 'Antenna':
-
-            columns.append((col,'String'))
+    pd.DataFrame(data=[allFrames.columns]).to_csv('./Data/output/all.csv',
+                                                  header=False,
+                                                  index=False)
+    typesHeaderForInsert = list(allFrames.columns.values)
+    for i, col in enumerate(allFrames.columns.values):
+        if allFrames[col].dtype == 'float64':
+            typesHeaderForInsert[i]='REAL'
+        elif allFrames[col].dtype == 'int64':
+            typesHeaderForInsert[i]='INTEGER'
         else:
-            columns.append((col,'Real'))
-    allFrames.columns = pd.MultiIndex.from_tuples(columns)
-
-
-allFrames.to_csv('./Data/output/all.csv',index = False)
+            typesHeaderForInsert[i]='STRING'
+    allFrames.columns = typesHeaderForInsert
+    allFrames.to_csv('./Data/output/all.csv', mode='a', index=False)
 
 # get user constrains
 file_type = max(order)  # finds highest order snp file
@@ -136,7 +138,7 @@ for df in frames:
     blue = int(blue * 255)
 
     colors[trace] = QtGui.QColor(red, green, blue)
-    radios[trace] = QtGui.QCheckBox(trace)
+    radios[trace] = QtGui.QCheckBox(trace[-20:])
     radios[trace].setStyleSheet('background-color:black;color: rgb(' +
                                 str(red) + ',' +
                                 str(green) + ',' +

@@ -8,8 +8,8 @@ from UI_file_select import UserInterface
 
 
 #Conrols ----------
-bandSearch = True  # CONTORL
-antSearch = True
+bandSearch = False  # CONTORL
+antSearch = False
 
 def convert_snp_csv(file):
     fpn_split = file.split('.')
