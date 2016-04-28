@@ -2,14 +2,17 @@
 from Tkinter import *
 import Tkinter, Tkconstants, tkFileDialog
 import json
+import os
 
 class UserInterface(Frame):    
     #User can get up to 3 folders worth of data
     def data_set(self):
-        self.filez = tkFileDialog.askopenfilenames(title='Choose 1st set of files')
+        self.filez = tkFileDialog.askopenfilenames(title='Choose 1st set of files',
+                                                   initialdir = self.settingsDict['filesDir'])
 
     def SaveDirectory(self):
-        self.outDirectory = tkFileDialog.askdirectory(title='Save Directory')
+        self.outDirectory = tkFileDialog.askdirectory(title='Save Directory',
+                                                      initialdir = self.settingsDict['saveDir'])
 
     def exit(self):
         #save settings to file
@@ -17,6 +20,13 @@ class UserInterface(Frame):
         self.settingsDict['Col2Title']=self.column2Name.get()
         self.settingsDict['Col1Data'] =self.column1Data.get()
         self.settingsDict['Col2Data'] =self.column2Data.get()
+        self.settingsDict['saveDir']  =self.outDirectory
+        if len(self.filez)==0:
+            print "You didnt select any files"
+            return
+
+        path,filename = os.path.split(self.filez[0])
+        self.settingsDict['filesDir'] =path
         print self.settingsDict
         with open('settings.json','w') as f:
             json.dump(self.settingsDict,f)
@@ -76,12 +86,16 @@ class UserInterface(Frame):
         self.portBox = Checkbutton()
         self.append = BooleanVar()
         self.outDirectory  = None
-        self.filez         = None
+        self.filez         = []
         self.settingsDict = {}
         self.settingsDict['Col1Title'] = 'Build'
         self.settingsDict['Col2Title'] = 'Unit'
         self.settingsDict['Col1Data']  = 'One'
         self.settingsDict['Col2Data']  = 'One'
+        self.settingsDict['saveDir'] = os.path.expanduser('~')
+        self.settingsDict['filesDir'] = os.path.expanduser('~')
+
+
         try:
             with open('settings.json','r') as f:
                 self.settingsDict = json.load(f)
