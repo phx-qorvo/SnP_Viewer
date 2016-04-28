@@ -15,9 +15,12 @@ import _tkinter
 import numpy as np
 from scipy import interpolate
 import os
+import sip
 
 # interactive/plotting Libraries
+import Tkinter
 from Tkinter import *
+import tkMessageBox
 from pyqtgraph.Qt import QtGui, QtCore
 import pyqtgraph as pg
 import matplotlib.cm as cm
@@ -100,14 +103,18 @@ if append == False:
 
 else:
     #check to see if columns match up
-    tempDf = pd.read_csv(outDir+'all.csv')
-    if tempDf.columns.tolist() != allFrames.columns.tolist():
-        print 'Column mismatch when appending \n Make sure file are same number of ports and columns have same name'
-
-    else:
-        del tempDf
-        allFrames.to_csv(outDir+'all.csv',mode='a',index=False,header=False)
-
+    try:
+        tempDf = pd.read_csv(outDir+'all.csv')
+        if tempDf.columns.tolist() != allFrames.columns.tolist():
+            print 'Column mismatch when appending \n Make sure file are same number of ports and columns have same name'
+        else:
+            del tempDf
+            allFrames.to_csv(outDir+'all.csv',mode='a',index=False,header=False)
+    except IOError:
+        top = Tkinter.Tk()
+        B1 =Tkinter.Button(top,text='cant append to a file that doesnt exist')
+        B1.pack()
+        top.mainloop()
 
 
 # get user constrains
@@ -477,4 +484,5 @@ if __name__ == '__main__':
     import sys
 
     if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
+        sip.setdestroyonexit(False)
         QtGui.QApplication.instance().exec_()
