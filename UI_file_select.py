@@ -71,7 +71,7 @@ class UserInterface(Frame):
         self.column2Data.grid(row=2, column=4)
 
         #always runs at initiaiton of class instance (python standard)
-    def __init__(self, master=None):  
+    def __init__(self, master=None):
         Frame.__init__(self, master)
         self.portBox = Checkbutton()
         self.append = BooleanVar()
@@ -82,11 +82,15 @@ class UserInterface(Frame):
         self.settingsDict['Col2Title'] = 'Unit'
         self.settingsDict['Col1Data']  = 'One'
         self.settingsDict['Col2Data']  = 'One'
-        with open('settings.json','r') as f:
-            try:
+        try:
+            with open('settings.json','r') as f:
                 self.settingsDict = json.load(f)
-            except ValueError:
-                print 'No User Settings...Yet'
+
+        except ValueError:
+            print 'could not read file'
+
+        except IOError:
+            print 'File doent exist yet'
 
         master.title("User Interface")
         self.grid()

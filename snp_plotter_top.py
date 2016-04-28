@@ -41,6 +41,7 @@ import py_syntax_highlighting
 
 
 # ----------User input
+
 root = Tk()
 user_input = UserInterface(master=root)  # creates instance of UI
 user_input.mainloop()  # keeps loop open until user hits 'Go'
