@@ -11,6 +11,7 @@ __status__ = "development"
 '''
 
 # Scientific/operational Libraries
+import _tkinter
 import numpy as np
 from scipy import interpolate
 import os
@@ -21,6 +22,8 @@ from pyqtgraph.Qt import QtGui, QtCore
 import pyqtgraph as pg
 import matplotlib.cm as cm
 import pandas as pd
+import getpass
+
 
 # my Libraries
 from UI_snp_constraints import UserLimits
@@ -46,45 +49,76 @@ colData2 = user_input.column2Data.get()
 colName2 = user_input.column2Name.get()
 colData1 = user_input.column1Data.get()
 colName1 = user_input.column1Name.get()
+outDir   = user_input.outDirectory
+append   = user_input.append.get()
 root.destroy()  # closes UI
+
+#Default save Location if none is chosen
+if outDir == None:
+    user =  getpass.getuser()
+    outDir = 'C:\\Users\\' + user + '\\Documents\\SnP_Files\\'
+    if not os.path.exists('C:\\Users\\' + user + '\\Documents\\SnP_Files'):
+        os.makedirs('C:\\Users\\' + user + '\\Documents\\SnP_Files')
+else:
+    outDir = outDir+'\\'
+
+
 
 # ---- Convert_data to pandas df
 frames = []
 order = []
 for f in files:
-    frames.append(convert_snp_csv(f))
+    frames.append(convert_snp_csv(f,outDir))
     extension = os.path.splitext(f)[1]
     num = [int(s) for s in re.findall(r'\d+', extension)]  # get file extension
     order.append(num[0])  # get 'n' number associated with SnP  (order)
 
 # save all data as one big file
+allFrames = pd.concat(frames)
+allFrames[colName1] = colData1
+allFrames[colName2] = colData2
+saveFileLocation = outDir + 'all.csv'
+saveFileLocation.replace('\\', '//')
 
-
-#Spotfire Stuff
-if user_input.customColumns.get() == True:
-    allFrames = pd.concat(frames)
-    allFrames[colName1] = colData1
-    allFrames[colName2] = colData2
-    pd.DataFrame(data=[allFrames.columns]).to_csv('./Data/output/all.csv',
-                                                  header=False,
-                                                  index=False)
+if append == False:
+    pd.DataFrame(data=[allFrames.columns]).to_csv(saveFileLocation,
+                                              header=False,
+                                              index=False)
+    #Formatting For Spotfire
     typesHeaderForInsert = list(allFrames.columns.values)
     for i, col in enumerate(allFrames.columns.values):
         if allFrames[col].dtype == 'float64':
-            typesHeaderForInsert[i]='REAL'
+            typesHeaderForInsert[i] = 'REAL'
         elif allFrames[col].dtype == 'int64':
-            typesHeaderForInsert[i]='INTEGER'
+            typesHeaderForInsert[i] = 'INTEGER'
         else:
-            typesHeaderForInsert[i]='STRING'
+            typesHeaderForInsert[i] = 'STRING'
     allFrames.columns = typesHeaderForInsert
-    allFrames.to_csv('./Data/output/all.csv', mode='a', index=False)
+    allFrames.to_csv(outDir + 'all.csv', mode='a', index=False)
+
+
+else:
+    #check to see if columns match up
+    tempDf = pd.read_csv(outDir+'all.csv')
+    if tempDf.columns.tolist() != allFrames.columns.tolist():
+        print 'Column mismatch when appending \n Make sure file are same number of ports and columns have same name'
+
+    else:
+        del tempDf
+        allFrames.to_csv(outDir+'all.csv',mode='a',index=False,header=False)
+
+
 
 # get user constrains
-file_type = max(order)  # finds highest order snp file
-root = Tk()
-user_val = UserLimits(file_type, master=root)
-user_val.mainloop()
-root.destroy()
+try:
+    file_type = max(order)  # finds highest order snp file
+    root = Tk()
+    user_val = UserLimits(file_type, master=root)
+    user_val.mainloop()
+    root.destroy()
+except _tkinter.TclError:
+    print 'You closed the GUI'
+    exit()
 
 white_background = False
 if user_val.white_background.get() == 1:

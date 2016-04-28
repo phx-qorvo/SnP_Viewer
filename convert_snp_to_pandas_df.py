@@ -11,7 +11,7 @@ from UI_file_select import UserInterface
 bandSearch = False  # CONTORL
 antSearch = False
 
-def convert_snp_csv(file):
+def convert_snp_csv(file,saveDir):
     fpn_split = file.split('.')
     # f_ext = fpn_split[-1]  # file extension
     # if f_ext =='s2p':
@@ -91,6 +91,7 @@ def convert_snp_csv(file):
     sParams = sParams[columns]
 
 
-    
-    sParams.to_csv('./Data/output/' + filename + '.csv', index=False)
+
+    saveFileLocation = saveDir + filename + '.csv'
+    sParams.to_csv(saveFileLocation, index=False)
     return sParams
