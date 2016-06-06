@@ -55,7 +55,6 @@ class UserInterface(Frame):
         self.portBox = Checkbutton(self, variable = self.append,
                                    state = ACTIVE,
                                    text = 'Append?')
-        self.portBox.select()
 
         self.portBox.grid(row=0,column=1)
 
@@ -85,6 +84,7 @@ class UserInterface(Frame):
         Frame.__init__(self, master)
         self.portBox = Checkbutton()
         self.append = BooleanVar()
+        self.append.set(0)
         self.outDirectory  = None
         self.filez         = []
         self.settingsDict = {}
