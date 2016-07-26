@@ -271,6 +271,8 @@ def add_marker():
                         # add text with data values to marker
                         text2 = pg.TextItem("test", anchor=(0.5, -1.0))
                         text2.setText('[%0.1f, %0.1f]' % (r_val, i_val))
+                        text2.setText(str(round(r_val,4))+'+'
+                                      +str(round(i_val,4))+'j')
                         text2.setParentItem(markers[t][last_value])
                     except (ValueError, IndexError):
                         print "unable to find frequency within range"
@@ -291,7 +293,8 @@ def add_marker():
                         current_marker = markers[t][last_value]
                         plots[t].addItem(current_marker)
                         text2 = pg.TextItem("test", anchor=(0.5, -1.0))
-                        text2.setText('[%0.1f, %0.1f]' % (f_mhz, val))
+                        text2.setText(str(round(val,4))+
+                                      ' @ '+str(round(f_mhz,4))+'MHz')
                         text2.setParentItem(markers[t][last_value])
                     except (ValueError, IndexError):
                         print "unable to find frequency within range"

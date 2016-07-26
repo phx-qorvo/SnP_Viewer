@@ -32,8 +32,8 @@ class UserInterface(Frame):
             json.dump(self.settingsDict,f)
         self.quit()
 
-    #called inside init so, it runs right away   
-    def createwidgets(self):    
+    #called inside init so,  createwidgets(self):  it runs right away
+    def createwidgets(self):
         # Buttons
         self.QUIT = Button(self)
         self.QUIT["text"] = "GO"
