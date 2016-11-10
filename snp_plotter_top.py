@@ -7,7 +7,7 @@ __license__ = "Open Source"
 __version__ = "1.0.1"
 __maintainer__ = "Roy Trudell"
 __email__ = "N/A"
-__status__ = "development"
+__status__ = "deployed"
 '''
 
 # Scientific/operational Libraries
@@ -16,19 +16,13 @@ import numpy as np
 from scipy import interpolate
 import os
 import sip
-
-# interactive/plotting Libraries
-import Tkinter
-from Tkinter import *
-import tkMessageBox
+import tkinter
+from tkinter import *
 from pyqtgraph.Qt import QtGui, QtCore
 import pyqtgraph as pg
 import matplotlib.cm as cm
 import pandas as pd
 import getpass
-
-
-# my Libraries
 from UI_snp_constraints import UserLimits
 from Utils import smith
 from Utils import moving_average
@@ -39,12 +33,7 @@ from UI_file_select import UserInterface
 from convert_snp_to_pandas_df import convert_snp_csv
 import py_syntax_highlighting
 
-# start debugger
-# import pdb;pdb.set_trace()
-
-
 # ----------User input
-
 root = Tk()
 user_input = UserInterface(master=root)  # creates instance of UI
 user_input.mainloop()  # keeps loop open until user hits 'Go'
@@ -106,7 +95,7 @@ else:
     try:
         tempDf = pd.read_csv(outDir+'all.csv')
         if tempDf.columns.tolist() != allFrames.columns.tolist():
-            print 'Column mismatch when appending \n Make sure file are same number of ports and columns have same name'
+            print('Column mismatch when appending \n Make sure file are same number of ports and columns have same name')
         else:
             del tempDf
             allFrames.to_csv(outDir+'all.csv',mode='a',index=False,header=False)
@@ -125,7 +114,7 @@ try:
     user_val.mainloop()
     root.destroy()
 except _tkinter.TclError:
-    print 'You closed the GUI'
+    print('You closed the GUI')
     exit()
 
 white_background = False
@@ -229,15 +218,15 @@ win.nextRow()
 
 def run_code():
     code = str(edit.toPlainText())
-    exec code
+    exec(code)
 
 
 def add_marker():
     global markers
 
-    for t, value0 in traces.iteritems():
+    for t, value0 in traces.items():
 
-        for name_of_curve_, value1 in traces[t].iteritems():
+        for name_of_curve_, value1 in traces[t].items():
 
             if radios[name_of_curve_].isChecked():
 
@@ -275,7 +264,7 @@ def add_marker():
                                       +str(round(i_val,4))+'j')
                         text2.setParentItem(markers[t][last_value])
                     except (ValueError, IndexError):
-                        print "unable to find frequency within range"
+                        print("unable to find frequency within range")
                 else:
                     try:
                         f1 = interpolate.interp1d(
@@ -297,11 +286,11 @@ def add_marker():
                                       ' @ '+str(round(f_mhz,4))+'MHz')
                         text2.setParentItem(markers[t][last_value])
                     except (ValueError, IndexError):
-                        print "unable to find frequency within range"
+                        print("unable to find frequency within range")
 
 
 def remove_markers():
-    for title_, Marker_arrows in markers.iteritems():
+    for title_, Marker_arrows in markers.items():
         for mark in Marker_arrows:
             plots[title_].removeItem(mark)
         markers[title_] = []
@@ -402,9 +391,9 @@ def update():
     """
     global traces, plots, data, lr
     min_limit, max_limit = lr.getRegion()  # in MHz
-    for t, v in plots.iteritems():
+    for t, v in plots.items():
         if 'Smith' in t:
-            for curve, value1 in traces[t].iteritems():
+            for curve, value1 in traces[t].items():
                 df_slice = data[curve][(data[curve]['Frequency'] >= min_limit) &
                                        (data[curve]['Frequency'] <= max_limit)]
 
@@ -423,16 +412,16 @@ if got_lr:  # if there is a vertical bar then we can update smith charts
 
 def toggle_trace():
     global radios
-    for plt, val in plots.iteritems():
+    for plt, val in plots.items():
         # legend[plt].items = []
         # remove all traces
-        for trace_, radio in radios.iteritems():
+        for trace_, radio in radios.items():
             try:
                 plots[plt].removeItem(traces[plt][trace_])
             except KeyError:
                 pass
         # populate necessary traces
-        for trace_, radio in radios.iteritems():
+        for trace_, radio in radios.items():
             if radio.isChecked():
                 try:
                     plots[plt].addItem(traces[plt][trace_])
@@ -441,14 +430,14 @@ def toggle_trace():
 
 
 # connect all buttons to function
-for t, r in radios.iteritems():
+for t, r in radios.items():
     r.stateChanged.connect(toggle_trace)
 
 
 # links mouse position to data information (in window title)
 def mouse_moved(evt):
     pos = evt[0]  # using signal proxy turns original arguments into a tuple
-    for plot_, v in plots.iteritems():
+    for plot_, v in plots.items():
         vb = v.vb
         if plots[plot_].sceneBoundingRect().contains(pos):
             mouse_point = vb.mapSceneToView(pos)
@@ -464,8 +453,9 @@ def mouse_moved(evt):
 
                 data_string = \
                     ' Impedance: {0}+{1}j VSWR: {2} ReturnLoss: {3}'.format(
-                        str(round(np.real(complex_point), 2)),
-                        str(round(np.imag(complex_point), 2)),
+
+                        str(round(complex_point.real,2)),
+                        str(round(complex_point.imag,2)),
                         str(round(vswr, 3)),
                         str(round(return_loss, 2)))
 
@@ -476,7 +466,7 @@ def mouse_moved(evt):
             win.setWindowTitle('SnP_Plots: ' + data_string)
 
 
-for plot, value in plots.iteritems():  # link mouse to function for each plot
+for plot, value in plots.items():  # link mouse to function for each plot
     proxy = pg.SignalProxy(value.scene().sigMouseMoved,
                            rateLimit=60,
                            slot=mouse_moved)

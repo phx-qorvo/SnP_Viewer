@@ -1,17 +1,18 @@
 #Modules used
-from Tkinter import *
-import Tkinter, Tkconstants, tkFileDialog
+from tkinter import *
+# import tkinter, tkconstants, tkFileDialog
 import json
+import tkinter.filedialog
 import os
 
 class UserInterface(Frame):    
     #User can get up to 3 folders worth of data
     def data_set(self):
-        self.filez = tkFileDialog.askopenfilenames(title='Choose 1st set of files',
+        self.filez = tkinter.filedialog.askopenfilenames(title='Choose 1st set of files',
                                                    initialdir = self.settingsDict['filesDir'])
 
     def SaveDirectory(self):
-        self.outDirectory = tkFileDialog.askdirectory(title='Save Directory',
+        self.outDirectory = tkinter.filedialog.askdirectory(title='Save Directory',
                                                       initialdir = self.settingsDict['saveDir'])
 
     def exit(self):
@@ -22,12 +23,12 @@ class UserInterface(Frame):
         self.settingsDict['Col2Data'] =self.column2Data.get()
         self.settingsDict['saveDir']  =self.outDirectory
         if len(self.filez)==0:
-            print "You didnt select any files"
+            print("You didnt select any files")
             return
 
         path,filename = os.path.split(self.filez[0])
         self.settingsDict['filesDir'] =path
-        print self.settingsDict
+        print(self.settingsDict)
         with open('settings.json','w') as f:
             json.dump(self.settingsDict,f)
         self.quit()
@@ -101,10 +102,10 @@ class UserInterface(Frame):
                 self.settingsDict = json.load(f)
 
         except ValueError:
-            print 'could not read file'
+            print('could not read file')
 
         except IOError:
-            print 'File doent exist yet'
+            print('File doent exist yet')
 
         master.title("User Interface")
         self.grid()

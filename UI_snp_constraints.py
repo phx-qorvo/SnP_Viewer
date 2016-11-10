@@ -1,5 +1,5 @@
 # Modules used
-from Tkinter import *
+from tkinter import *
 
 
 class UserLimits(Frame):
