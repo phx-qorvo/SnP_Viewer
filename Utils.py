@@ -1,6 +1,8 @@
 from pyqtgraph.Qt import QtGui, QtCore
 import numpy as np
 import pyqtgraph as pg
+import tkinter
+from tkinter import *
 
 def smith(p,white_backgorund):
     # make smith Chart

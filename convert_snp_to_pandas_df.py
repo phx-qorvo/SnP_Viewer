@@ -1,27 +1,15 @@
 from read_touchstone import Touchstone
 import pandas as pd
 import numpy as np
-from tkinter import *
 import os
-from UI_file_select import UserInterface
 
 
-
-#Conrols ----------
-bandSearch = False  # CONTORL
-antSearch = False
-
-def convert_snp_csv(file,saveDir):
-    fpn_split = file.split('.')
-    # f_ext = fpn_split[-1]  # file extension
-    # if f_ext =='s2p':
+def convert_snp_csv(file):
     Instance = Touchstone(file)
     freq, array = Instance.get_sparameter_arrays()
     names = Instance.get_sparameter_names()
-    # s11 = array[:, 0, 0]
     sParams = pd.DataFrame(columns=names)
 
-    # strings = []
     for i, name in enumerate(names):
         if i == 0:
             sParams[str(name)] = freq
@@ -33,10 +21,8 @@ def convert_snp_csv(file,saveDir):
             if 'I' in name:
                 sParams[name] = np.imag(
                     array[:, int(name[1]) - 1, int(name[2]) - 1])
-
     head, tail = os.path.split(file)
     filename, file_extension = os.path.splitext(tail)
-
     # calculate mag_phase (goes up to 20 port, but can easily add more)
     for x in range(0, 20):
         for y in range(0, 20):
@@ -47,38 +33,7 @@ def convert_snp_csv(file,saveDir):
                 sParams['S' + str(x) + str(y) + '_dB'] = 20 * np.log10(
                     np.absolute(complex))
 
-                sParams['S' + str(x) + str(y) + '_Ang'] = np.angle(complex,
-                                                                   deg=True)
-
-
-    # Extract Band From Filename
-    if bandSearch == True:
-        band = ''
-        for x, letter in enumerate(filename):
-            if letter == 'B' or letter == 'b':
-                try:
-                    value = int(tail[x + 1])
-                    band += str(letter)
-                    band += str(tail[x + 1])
-                except ValueError:
-                    pass
-                try:
-                    value = int(tail[x + 2])
-                    band += str(value)
-                except ValueError:
-                    pass
-                if tail[x + 3] == 'a' or tail[x + 3] == 'A' or \
-                                tail[x + 3] == 'b' or tail[x + 3] == 'B':
-                    band += str(tail[x + 3])
-                sParams['Txband'] = str(band)
-
-
-    if antSearch == True:
-        if 'ANT1' in filename or 'ant1' in filename:
-            sParams['Antenna'] = '1'
-        if 'ANT2' in filename or 'ant2' in filename:
-                sParams['Antenna'] = '2'
-
+                sParams['S' + str(x) + str(y) + '_Ang'] = np.angle(complex, deg=True)
 
     # More Calculated columns
     sParams['sourcefile'] = filename
@@ -89,9 +44,4 @@ def convert_snp_csv(file,saveDir):
     columns = list(sParams.columns.values)
     columns.insert(0,columns.pop(columns.index('Frequency')))
     sParams = sParams[columns]
-
-
-
-    saveFileLocation = saveDir + filename + '.csv'
-    sParams.to_csv(saveFileLocation, index=False)
     return sParams

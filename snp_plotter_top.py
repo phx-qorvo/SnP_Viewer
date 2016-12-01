@@ -16,7 +16,6 @@ import numpy as np
 from scipy import interpolate
 import os
 import sip
-import tkinter
 from tkinter import *
 from pyqtgraph.Qt import QtGui, QtCore
 import pyqtgraph as pg
@@ -38,24 +37,8 @@ root = Tk()
 user_input = UserInterface(master=root)  # creates instance of UI
 user_input.mainloop()  # keeps loop open until user hits 'Go'
 files = user_input.filez  # first file set
-colData2 = user_input.column2Data.get()
-colName2 = user_input.column2Name.get()
-colData1 = user_input.column1Data.get()
-colName1 = user_input.column1Name.get()
 outDir   = user_input.outDirectory
-append   = user_input.append.get()
 root.destroy()  # closes UI
-
-#Default save Location if none is chosen
-if outDir == None:
-    user =  getpass.getuser()
-    outDir = 'C:\\Users\\' + user + '\\Documents\\SnP_Files\\'
-    if not os.path.exists('C:\\Users\\' + user + '\\Documents\\SnP_Files'):
-        os.makedirs('C:\\Users\\' + user + '\\Documents\\SnP_Files')
-else:
-    outDir = outDir+'\\'
-
-
 
 # ---- Convert_data to pandas df
 frames = []
@@ -65,46 +48,6 @@ for f in files:
     extension = os.path.splitext(f)[1]
     num = [int(s) for s in re.findall(r'\d+', extension)]  # get file extension
     order.append(num[0])  # get 'n' number associated with SnP  (order)
-
-# save all data as one big file
-allFrames = pd.concat(frames)
-allFrames[colName1] = colData1
-allFrames[colName2] = colData2
-saveFileLocation = outDir + 'all.csv'
-saveFileLocation.replace('\\', '//')
-
-if append == False:
-    pd.DataFrame(data=[allFrames.columns]).to_csv(saveFileLocation,
-                                              header=False,
-                                              index=False)
-    #Formatting For Spotfire
-    typesHeaderForInsert = list(allFrames.columns.values)
-    for i, col in enumerate(allFrames.columns.values):
-        if allFrames[col].dtype == 'float64':
-            typesHeaderForInsert[i] = 'REAL'
-        elif allFrames[col].dtype == 'int64':
-            typesHeaderForInsert[i] = 'INTEGER'
-        else:
-            typesHeaderForInsert[i] = 'STRING'
-    allFrames.columns = typesHeaderForInsert
-    allFrames.to_csv(outDir + 'all.csv', mode='a', index=False)
-
-
-else:
-    #check to see if columns match up
-    try:
-        tempDf = pd.read_csv(outDir+'all.csv')
-        if tempDf.columns.tolist() != allFrames.columns.tolist():
-            print('Column mismatch when appending \n Make sure file are same number of ports and columns have same name')
-        else:
-            del tempDf
-            allFrames.to_csv(outDir+'all.csv',mode='a',index=False,header=False)
-    except IOError:
-        top = Tkinter.Tk()
-        B1 =Tkinter.Button(top,text='cant append to a file that doesnt exist')
-        B1.pack()
-        top.mainloop()
-
 
 # get user constrains
 try:
