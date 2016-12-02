@@ -8,7 +8,7 @@ import matplotlib.cm as cm
 import pandas as pd
 from Utils import smith
 from convert_snp_to_pandas_df import convert_snp_csv
-
+#test
 class SnpPlotter:
     def __init__(self):
         # *******************Setup interactive plotting*********************************
