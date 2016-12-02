@@ -11,6 +11,7 @@ Plotter = SnpPlotter()
 # 5. windowing multiple regions
 # 6. multiple charts of same port logmag -Done
 # 7. save and recall template
+# nofsjn
 
 '''Main Loop'''
 # Start Qt event loop unless running in interactive mode or using pyside.
