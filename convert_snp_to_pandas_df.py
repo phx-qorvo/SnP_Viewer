@@ -2,6 +2,7 @@ from read_touchstone import Touchstone
 import pandas as pd
 import numpy as np
 import os
+import re
 
 
 def convert_snp_csv(file):
@@ -39,7 +40,8 @@ def convert_snp_csv(file):
     sParams['sourcefile'] = filename
     sParams['Frequency'] = sParams['frequency'] * (1 / 1e6)
     sParams = sParams.drop('frequency', 1)
-    
+    num = [int(s) for s in re.findall(r'\d+', file_extension)]  # get file extension
+    sParams['order'] = num[0]
     #move Frequency to be the first column
     columns = list(sParams.columns.values)
     columns.insert(0,columns.pop(columns.index('Frequency')))
