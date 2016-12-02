@@ -1,8 +1,5 @@
-import _tkinter
 import numpy as np
-from scipy import interpolate
-import os
-import sip
+from tkinter import filedialog
 from tkinter import *
 import tkinter
 from pyqtgraph.Qt import QtGui, QtCore
@@ -13,9 +10,7 @@ from Utils import smith
 from convert_snp_to_pandas_df import convert_snp_csv
 
 
-
 class SnpPlotter:
-
     def __init__(self):
         # *******************Setup interactive plotting*********************************
         self.app = QtGui.QApplication([])
@@ -311,7 +306,6 @@ class SnpPlotter:
                         for portKey, port in self.ports[window].items():  #Every Port
                             if self.smithBoxes[window].isChecked() and port.isChecked():
                                 smith(p=self.canvas[window],white_backgorund=False)
-                                print('{}{}{}'.format(file,portKey,section))
                                 self.traces[window]['{}{}{}'.format(file,portKey,section)]=\
                                     self.canvas[window].plot(x=np.asarray(data[portKey + 'R']),
                                                              y=np.asarray(data[portKey + 'I']),
