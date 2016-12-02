@@ -1,4 +1,3 @@
-import numpy as np
 import pyqtgraph as pg
 from read_touchstone import Touchstone
 import pandas as pd
