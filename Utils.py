@@ -5,7 +5,6 @@ import numpy as np
 import os
 import re
 
-
 def convert_snp_csv(file):
     Instance = Touchstone(file)
     freq, array = Instance.get_sparameter_arrays()
