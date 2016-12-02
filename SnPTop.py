@@ -15,7 +15,6 @@ Plotter = SnpPlotter()
 #     7. save and recall template
 #
 
-
 '''Main Loop'''
 # Start Qt event loop unless running in interactive mode or using pyside.
 if __name__ == '__main__':

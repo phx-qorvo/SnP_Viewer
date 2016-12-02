@@ -4,13 +4,11 @@ import numpy as np
 import os
 import re
 
-
 def convert_snp_csv(file):
     Instance = Touchstone(file)
     freq, array = Instance.get_sparameter_arrays()
     names = Instance.get_sparameter_names()
     sParams = pd.DataFrame(columns=names)
-
     for i, name in enumerate(names):
         if i == 0:
             sParams[str(name)] = freq
@@ -35,7 +33,6 @@ def convert_snp_csv(file):
                     np.absolute(complex))
 
                 sParams['S' + str(x) + str(y) + '_Ang'] = np.angle(complex, deg=True)
-
     # More Calculated columns
     sParams['sourcefile'] = filename
     sParams['Frequency'] = sParams['frequency'] * (1 / 1e6)
